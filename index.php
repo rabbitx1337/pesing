@@ -170,7 +170,7 @@ if (isset($_POST['reset'])) {
 </form>
 <?php
 $data = file_get_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json");
-$key = "rabbitx"; //sha1(65d592ca6de0975858e73068ddb745bea5b095e0)
+$key = "rabbitx";
 if (empty($key) || (isset($_GET['key']) && ($_GET['key'] == sha1($key)))) {
 	?>
 	<div class="basic">
